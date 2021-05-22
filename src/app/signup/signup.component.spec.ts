@@ -6,6 +6,7 @@ import { AuthService } from '../services/auth/auth.service';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { of, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 class SignupPage {
   submitBtn: DebugElement;
@@ -29,6 +30,10 @@ class SignupPage {
   }
 }
 
+class MockRouter {
+  navigate(path) {}
+}
+
 class MockAuthService {
   signup(credentials) {}
 }
@@ -37,6 +42,7 @@ let component: SignupComponent;
 let fixture: ComponentFixture<SignupComponent>;
 let signupPage: SignupPage;
 let authService: AuthService;
+let router: Router;
 
  
 describe('SignupComponent', () => {
@@ -47,7 +53,8 @@ describe('SignupComponent', () => {
     .overrideComponent(SignupComponent, {
       set: {
         providers: [
-          { provide: AuthService, useClass: MockAuthService }
+          { provide: AuthService, useClass: MockAuthService },
+          { provide: Router, useClass: MockRouter }
         ]
       }
     }).compileComponents();
@@ -59,6 +66,7 @@ describe('SignupComponent', () => {
 
     signupPage = new SignupPage();
     authService = fixture.debugElement.injector.get(AuthService);
+    router = fixture.debugElement.injector.get(Router);
 
     fixture.detectChanges();
 
@@ -84,7 +92,7 @@ describe('SignupComponent', () => {
     spyOn(authService, 'signup').and.callFake(() => {
       return of({ 'token' : 's3cr3tt0ken' } );
     });
-
+    spyOn(router, 'navigate');
     signupPage.submitBtn.nativeElement.click();
 
     expect(authService.signup).toHaveBeenCalledWith({
@@ -94,7 +102,7 @@ describe('SignupComponent', () => {
     });
 
     //Add expectation to redirect user dahsboard
-  })
+  });
 
   it('should display an error message with invalid credentials', () => {
     signupPage.usernameInput.value = 'janedoe';
