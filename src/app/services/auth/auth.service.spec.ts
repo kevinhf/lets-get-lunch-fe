@@ -108,5 +108,39 @@ describe('isLoggedIn', () => {
     expect(service.isLoggedIn()).toEqual(false);
   })
 
+})
 
+describe('login', () => {
+  it('should return a token with a valid username and passsword', () => {
+    const user = { 'username' : 'myUser', 'password' : 'password'};
+    const loginResponse = { 'token' : 's3cr3tt0ken' };
+    let response;
+
+    service.login(user).subscribe( res => {
+      response = res;
+    });
+
+    spyOn(service.loggedIn, 'emit');
+
+    http.expectOne('http://localhost:8080/api/sessions').flush(loginResponse);
+    expect(response).toEqual(loginResponse);
+    expect(localStorage.getItem('Authorization')).toEqual('s3cr3tt0ken');
+    expect(service.loggedIn.emit).toHaveBeenCalled();
+    http.verify();
+  });
+});
+
+describe('logout', () => {
+  it('should clear the token from local storage', () => {
+    spyOn(service.loggedIn, 'emit');
+
+    localStorage.setItem('Authorization', 's3cr3tt0ken');
+    expect(localStorage.getItem('Authorization')).toEqual('s3cr3tt0ken');
+
+    service.logout();
+
+    expect(localStorage.getItem('Authorization')).toBeFalsy();
+    expect(service.loggedIn.emit).toHaveBeenCalledWith(false);
+
+  })
 })
