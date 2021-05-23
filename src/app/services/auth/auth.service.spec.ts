@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 
-import { AuthService } from './auth.service';
-
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
+
+import { AuthService } from './auth.service';
 
 function tokenGetter(){
   return localStorage.getItem('Authorization');
@@ -91,56 +91,55 @@ describe('AuthService', () => {
       http.verify();
     })
   })
-  
-
-});
-
-describe('isLoggedIn', () => {
-  it('should return true if the user is logged in', () => {
-    localStorage.setItem('Authorization', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
-      'eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.' +
-      'TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ');
-    expect(service.isLoggedIn()).toEqual(true);
-  });
-
-  it('should return false if the user is not logged in', () => {
-    localStorage.removeItem('Authorization');
-    expect(service.isLoggedIn()).toEqual(false);
-  })
-
-})
-
-describe('login', () => {
-  it('should return a token with a valid username and passsword', () => {
-    const user = { 'username' : 'myUser', 'password' : 'password'};
-    const loginResponse = { 'token' : 's3cr3tt0ken' };
-    let response;
-
-    service.login(user).subscribe( res => {
-      response = res;
+  describe('isLoggedIn', () => {
+    it('should return true if the user is logged in', () => {
+      localStorage.setItem('Authorization', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' +
+        'eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.' +
+        'TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ');
+      expect(service.isLoggedIn()).toEqual(true);
     });
-
-    spyOn(service.loggedIn, 'emit');
-
-    http.expectOne('http://localhost:8080/api/sessions').flush(loginResponse);
-    expect(response).toEqual(loginResponse);
-    expect(localStorage.getItem('Authorization')).toEqual('s3cr3tt0ken');
-    expect(service.loggedIn.emit).toHaveBeenCalled();
-    http.verify();
+  
+    it('should return false if the user is not logged in', () => {
+      localStorage.removeItem('Authorization');
+      expect(service.isLoggedIn()).toEqual(false);
+    })
+  
+  })
+  
+  describe('login', () => {
+    it('should return a token with a valid username and passsword', () => {
+      const user = { 'username' : 'myUser', 'password' : 'password'};
+      const loginResponse = { 'token' : 's3cr3tt0ken' };
+      let response;
+  
+      service.login(user).subscribe( res => {
+        response = res;
+      });
+  
+      spyOn(service.loggedIn, 'emit');
+  
+      http.expectOne('http://localhost:8080/api/sessions').flush(loginResponse);
+      expect(response).toEqual(loginResponse);
+      expect(localStorage.getItem('Authorization')).toEqual('s3cr3tt0ken');
+      expect(service.loggedIn.emit).toHaveBeenCalled();
+      http.verify();
+    });
   });
+  
+  describe('logout', () => {
+    it('should clear the token from local storage', () => {
+      spyOn(service.loggedIn, 'emit');
+  
+      localStorage.setItem('Authorization', 's3cr3tt0ken');
+      expect(localStorage.getItem('Authorization')).toEqual('s3cr3tt0ken');
+  
+      service.logout();
+  
+      expect(localStorage.getItem('Authorization')).toBeFalsy();
+      expect(service.loggedIn.emit).toHaveBeenCalledWith(false);
+  
+    })
+  })
+
 });
 
-describe('logout', () => {
-  it('should clear the token from local storage', () => {
-    spyOn(service.loggedIn, 'emit');
-
-    localStorage.setItem('Authorization', 's3cr3tt0ken');
-    expect(localStorage.getItem('Authorization')).toEqual('s3cr3tt0ken');
-
-    service.logout();
-
-    expect(localStorage.getItem('Authorization')).toBeFalsy();
-    expect(service.loggedIn.emit).toHaveBeenCalledWith(false);
-
-  })
-})

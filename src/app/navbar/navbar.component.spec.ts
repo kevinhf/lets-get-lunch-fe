@@ -83,7 +83,7 @@ describe('NavbarComponent', () => {
       expect(component.isLoggedIn).toEqual(false);
     });
 
-    it('should have a link to the homepafe when clicking the brand name', () => {
+    it('should have a link to the homepage when clicking the brand name', () => {
       const link = fixture.debugElement.query(By.css('.navbar-brand'));
       expect(link.attributes.routerLink).toEqual('');
     });
@@ -92,6 +92,11 @@ describe('NavbarComponent', () => {
       const link = fixture.debugElement.query(By.css('[data-test=signup]'));
       expect(link.attributes.routerLink).toEqual('/signup');
     });
+
+    it('should have a link to login visible', () => {
+      const link = fixture.debugElement.query(By.css('[data-test=login]'));
+      expect(link.attributes.routerLink).toEqual('/login');
+    })
 
   });
 
