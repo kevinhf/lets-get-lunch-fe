@@ -8,7 +8,17 @@ describe('Signup', () => {
         cy.request('DELETE', 'http://localhost:8080/api/test');
     });
 
-    it('should navigate to the dasboard with valid credentials ' +  'andd diet preferences', () => {
+    it('should navigate to the dashboard with valid credentials', () => {
+        cy
+        .visit('/signup')
+        .url().should('include','/signup')
+        .get('#username').type('user')
+        .get('#password').type('password')
+        .get('form').submit()
+        .url().should('include', '/dashboard')
+    });
+
+    it('should navigate to the dasboard with valid credentials ' +  'and diet preferences', () => {
         cy 
         .visit('/signup')
         .url().should('include','/signup')
@@ -30,6 +40,9 @@ describe('Signup', () => {
             .should('be.visible')
             .should('have.text', 'Your password must be at least 5 characters long.');
     });
+
+    //TODO
+    //It should display an error for a username that already exists
 
 
 });
