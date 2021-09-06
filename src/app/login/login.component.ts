@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { User } from '../services/auth/user';
 import { AuthService } from '../services/auth/auth.service';
 
@@ -23,7 +24,7 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/dashboard']);
     }, err => {
       this.errorMessage = err.error.message;
-    })
+    });
   }
 
 }

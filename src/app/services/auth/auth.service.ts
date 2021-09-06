@@ -42,4 +42,8 @@ export class AuthService {
     this.loggedIn.emit(false);
   }
 
+  currentUser() {
+    return this.jwtHelper.decodeToken(localStorage.getItem('Authorization'));
+  }
+
 }

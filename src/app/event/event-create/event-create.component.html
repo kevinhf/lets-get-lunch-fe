@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form action="">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" formControlName="title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" class="form-control" formControlName="description">
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" #city class="form-control" autocorrect="off" formControlName="location">
+                </div>
+                <div class="form-group">
+                    <label>Start</label>
+                    <input type="text" class="form-control" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" formControlName="startTime">
+                    <owl-date-time #dt1></owl-date-time>
+                </div>
+
+                <div class="form-group">
+                    <label>End</label>
+                    <input type="text" class="form-control" [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" formControlName="endTime">
+                    <owl-date-time #dt2></owl-date-time>
+                </div>            
+            
+                <div class="form-group">
+                    <label for="">Suggest locations?</label>
+                    <input type="radio" id="suggest-true" formControl="suggestLocations" [value]="true">
+                    <label for="suggest-true">Yes</label>
+
+                    <input type="radio" id="suggest-false" formControlName="suggestLocations" [value]="false">
+                    <label for="suggest-false">No</label>
+                </div>
+
+                <div class="form-group">
+                    <button class="cancel btn btn-default" type="button" routerLink="/dahsboard">Cancel</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!eventForm.valid">Save</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" novalidate>
+                <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+                <div *ngIf="success" class="alert alert-success">{{success}}</div>
+                <div class="form-group">
+                    <button class="cancel btn btn-default" type="button" routerLink="/dashboard">Cancel</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!eventForm.valid">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
