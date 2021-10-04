@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Event } from './event';
+
+import { format } from 'date-fns';
+
+
 
 @Injectable()
 export class EventsService {
@@ -12,5 +17,22 @@ export class EventsService {
   create(event: Event): Observable<Event> {
     return this.http.post<Event>('http://localhost:8080/api/events', event);
   }
+
+  getUserEvents(userId: string): Observable<Event[]> {
+    return this.http.get<Event[]>('http://localhost:8080/api/events/user/' + userId);
+  }
+
+  get(id: string): Observable<Event>{
+    return this.http.get<Event>('http://localhost:8080/api/events/' + id).pipe(
+      map((res: Event) => this.formatDateTime(res))
+    );
+  }
+
+  formatDateTime(event: Event): Event { 
+    event.displayStart = format(event.startTime, 'dddd MM, Do - h:mm A');
+    event.displayEnd = format(event.endTime, 'dddd MM, Do - h:mm A');
+    return event;
+  }
+
 
 }
