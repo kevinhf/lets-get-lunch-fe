@@ -50,8 +50,18 @@ describe('Navbar', () => {
         .get('#password').type('password')
         .get('form').submit()
         .get('.alert').should('be.visible').should('have.text', 'This user already exists.');
+    })
 
+    it('should show a link to see all events', () => {
+        cy
+        .get('[data-test=events]')
+        .should('have.text', 'Events').click()
+        .url().should('include', '/events');
+    });
 
+    it('should show a link to logout', () => {
+        cy.get('[data-test=logout]').should('have.text', 'Logout').click()
+        .url().should('include', '/');
     })
 
 })

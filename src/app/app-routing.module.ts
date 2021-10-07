@@ -7,8 +7,10 @@ const routes: Routes = [
   { path: 'signup', loadChildren: () => import('./signup/signup.module').then(m => m.SignupModule)},
   { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
   { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
-  { path: 'event', loadChildren: () => import('./event/event.module').then(m => m.EventModule) }
+  { path: 'event', loadChildren: () => import('./event/event.module').then(m => m.EventModule) },
+  { path: 'events', loadChildren: () => import('./events-list/events-list.module').then(m => m.EventsListModule )}
 ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
