@@ -7,12 +7,13 @@ import { Event } from './event';
 
 import { format } from 'date-fns';
 
+import { AuthService } from '../auth/auth.service';
 
 
 @Injectable()
 export class EventsService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   create(event: Event): Observable<Event> {
     return this.http.post<Event>('http://localhost:8080/api/events', event);
@@ -38,5 +39,13 @@ export class EventsService {
     return event;
   }
 
+  isEventCreator(creatorId: string): boolean {
+    const user = this.authService.currentUser();
+    return user._id === creatorId ? true : false;
+  }
+
+  subscribe(eventId: string, user: object): Observable<Event> {
+    return this.http.patch<Event>('http://localhost:8080/api/events/' + eventId + '/subscribe', user);
+  }
 
 }

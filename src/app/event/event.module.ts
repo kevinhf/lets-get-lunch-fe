@@ -11,15 +11,18 @@ import { EventViewComponent } from './event-view/event-view.component';
 
 import { CommentCreateModule } from '../comment-create/comment-create.module';
 
+import { MemberListModule } from '../member-list/member-list.module';
+
 @NgModule({
-  declarations: [EventCreateComponent, EventViewComponent],
   imports: [
     CommonModule,
     EventRoutingModule,
     ReactiveFormsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    CommentCreateModule
-  ]
+    CommentCreateModule,
+    MemberListModule
+  ],
+  declarations: [EventCreateComponent, EventViewComponent]
 })
 export class EventModule { }
