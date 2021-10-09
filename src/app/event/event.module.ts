@@ -13,6 +13,8 @@ import { CommentCreateModule } from '../comment-create/comment-create.module';
 
 import { MemberListModule } from '../member-list/member-list.module';
 
+import { RecommendationsListModule } from '../recommendations-list/recommendations-list.module';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { MemberListModule } from '../member-list/member-list.module';
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     CommentCreateModule,
-    MemberListModule
+    MemberListModule,
+    RecommendationsListModule
   ],
   declarations: [EventCreateComponent, EventViewComponent]
 })
