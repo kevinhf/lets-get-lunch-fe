@@ -14,18 +14,22 @@ import { CommentCreateModule } from '../comment-create/comment-create.module';
 import { MemberListModule } from '../member-list/member-list.module';
 
 import { RecommendationsListModule } from '../recommendations-list/recommendations-list.module';
+import { EventUpdateComponent } from './event-update/event-update.component';
+
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   imports: [
     CommonModule,
     EventRoutingModule,
-    ReactiveFormsModule,
+    FormsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     CommentCreateModule,
     MemberListModule,
     RecommendationsListModule
   ],
-  declarations: [EventCreateComponent, EventViewComponent]
+  declarations: [EventCreateComponent, EventViewComponent, EventUpdateComponent]
 })
 export class EventModule { }
