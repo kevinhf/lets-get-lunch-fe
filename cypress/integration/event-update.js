@@ -43,7 +43,7 @@ describe('Event Update', () => {
             })
             .get('.recommendations-container').should('be.visible');
         })
-    })
+    });
 
     it('should display an error message for an event that cannot be updated', () => {
         cy.server({
@@ -55,7 +55,7 @@ describe('Event Update', () => {
         cy.get('.event-edit').click()
         .get('button[type=submit]').click()
         .get('.alert-danger').should('be.visible')
-    })
+    });
 
 
-})
+});
